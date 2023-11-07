@@ -38,3 +38,5 @@ alumno_1.crecer()
 alumno_1.crecer()
 
 lista = list(26, 6, 11)
+
+lista = list(26, 6, 12)
