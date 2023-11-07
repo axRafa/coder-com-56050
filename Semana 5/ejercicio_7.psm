@@ -1,0 +1,23 @@
+CONSTANT leds_out			, 01;
+CONSTANT switch_in			, 00;
+
+CONSTANT all_clear			, 00;
+
+main:		LOAD		s0, 07			;cargo el primer operando
+			JUMP		Z, cero			;en caso de multiplicar por cero
+			LOAD		s1, 09			;segundo operando
+			LOAD		s2, s1			;copio el operando en s2
+			LOAD		s3, FF			;guardo el resultado en caso de error
+
+operar:		ADD			s1, s2			;sumo el segundo operando a si mismo
+			JUMP		C, 01			;si el bit de carry se enciende, hay un error
+			SUB			s0, 01			;le quito una unidad al primer operando para no sumar una vez de más
+			JUMP		Z, show			;el bit zero indica si el contador terminó los ciclos necesarios
+			JUMP		operar			;vuelve a comenzar el loop
+
+error:		OUTPUT		s3, leds_out	;muestra el resultado de error
+			JUMP		main			;vuelve a la funcion principal
+
+cero:		OUTPUT		s0, leds_out	;muestra el primer operando (en caso de ser 0)
+
+show:		OUTPUT		s1, leds_out	;muestra el resultado
